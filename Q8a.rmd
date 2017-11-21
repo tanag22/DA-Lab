@@ -1,0 +1,109 @@
+```{r}
+stud<-read.csv('Q8a.csv',header=TRUE)
+head(stud)
+
+```
+
+a. Change the column names of stud data set. 
+```{r}
+colnames(stud)<-c("Name","USN","Department","S1","S2","S3","S4","S5","SGPA","Gender")
+head(stud)
+
+```
+
+b. Use with() and plot(), plot graph against dept and average CGPA semesterwise.
+```{r}
+s<-aggregate(SGPA~Department,stud,mean)
+s
+with(s,plot(Department,SGPA,ylim=c(0,10)))
+```
+
+c. Use qplot(), to plot the same mentioned in (b)
+```{r}
+library('ggplot2')
+qplot(s$Department,s$SGPA)
+
+```
+
+d. Use qplot() with attributes color, shape, x and y labels.
+```{r}
+qplot(s$Department,s$SGPA,xlab="Department",ylab="Average SGPA",colour='red')
+
+```
+
+e. Display the dimension of stud data set.
+```{r}
+nrow(stud)
+ncol(stud)
+
+```
+
+f. using ggplot() and geom_point() , plot the same mentioned in (b)
+```{r}
+ggplot(data=s,aes(x=Department,y=SGPA))+geom_point()
+
+```
+
+g. in ggplot() , change the point size.
+```{r}
+ggplot(data=s,aes(x=Department,y=SGPA))+geom_point(aes(size=4))
+
+```
+h. change color of points in ggplot().
+```{r}
+ggplot(data=s,aes(x=Department,y=SGPA))+geom_point(colour="green")
+```
+
+i. define your own color palatte and use it in ggplot()
+```{r}
+cbpallete<-c('#E69F00','#F6B4E9','#009E73','#F0EE22','#F00000','#Eff000','#345670','#FFFF00','#098766')
+ggplot(data=s,aes(x=Department,y=SGPA))+geom_point(colour=cbpallete)
+
+
+```
+
+j. Using facet_wrap(), plot for (f), with respect to dept
+```{r}
+
+ggplot(data=s,aes(x=Department,y=SGPA))+geom_point()+facet_wrap(~Department)
+```
+
+k. Using facet_grid(), perform the (j)
+```{r}
+ggplot(data=s,aes(x=Department,y=SGPA))+geom_point()+facet_grid(~Department)
+```
+
+l. Draw bar graph for (b) using ggplot and geom_bar().
+```{r}
+ggplot(data=s,aes(x=Department,y=SGPA))+geom_bar(stat = "identity")
+```
+
+m. Add legends in graph.
+```{r}
+c9<-c("BT","CHEM","CSE","ECE","EEE","IEM","ISE","MECH","TCE")
+
+ggplot(data=s,aes(x=Department,y=SGPA,fill=c9))+geom_bar(stat = "identity")
+
+```
+
+n. Draw smooth curves using stat_smooth() and by changing size for (b)
+```{r}
+s2<-aggregate(SGPA~Department+Gender,stud,mean)
+s2
+ggplot(data=s2,aes(x=Department,y=SGPA))+geom_line(size=2)+stat_smooth()
+```
+
+o. Add title to ggplot() of your graph and draw regression lines and geom points for (b)
+```{r}
+ggplot(data=s,aes(x=Department,y=SGPA))+geom_point()+ggtitle("Dept vs SGPA")
+```
+
+p. Draw ggplot() for dept wise students' average CGPA.
+```{r}
+ggplot(data=s,aes(x=Department,y=SGPA))+geom_point()
+```
+
+q. Draw grom Polygon for (p)
+
+
+

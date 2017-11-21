@@ -1,0 +1,189 @@
+```{r}
+
+student<-read.csv("Tut-3.csv",header=TRUE)
+head(student$Sub2,10)
+```
+
+```{r}
+str(student)
+#Sub2 is becoming factors as they contain String data
+```
+
+Convert the marks to numerical data and show.
+```{r}
+sub2<-student$Sub2
+sub2
+
+as.numeric(as.character(sub2))
+
+```
+
+Display the mark as factors.
+```{r}
+as.numeric(sub2)
+
+```
+
+ Display the marks as characters
+```{r}
+ as.character(sub2)
+```
+Display the type of marks columns
+```{r}
+typeof(as.numeric(as.character(sub2)))
+
+```
+
+using gsub remove character data in marks column. Using gsub remove numerical data in name column
+```{r}
+sub2
+gsub("[^0-9]","",sub2)
+names<-student$ï..Names
+gsub("[^A-Za-z]","",names)
+```
+
+Clean the name and marks column and put it in a new student data set variable using transform function
+```{r}
+sub2.clean <- as.numeric(gsub("[^0-9.]", "", sub2))
+sub2.clean
+new_stud<-transform(student, Sub2 = sub2.clean)
+new_stud
+
+```
+
+use table to get summary of student data
+```{r}
+table(student["Sub1"])
+table(student["Dept"])
+```
+
+Use sapply to perform the cleaning of data mentioned above
+```{r}
+clean<-function(student)
+{
+  sub2.clean <- as.numeric(gsub("[^0-9.]", "", sub2))
+  sub2.clean
+  new_stud<-transform(student, Sub2 = sub2.clean)
+  new_stud
+}
+
+sapply(student,FUN=clean)
+```
+
+ use lapply to perform the cleaning of data mentioned above
+```{r}
+clean<-function(student)
+{
+  sub2.clean <- as.numeric(gsub("[^0-9.]", "", sub2))
+  sub2.clean
+  new_stud<-transform(student, Sub2 = sub2.clean)
+  new_stud
+}
+
+lapply(student,FUN=clean)
+
+```
+
+Display the summary using summary()
+```{r}
+summary(student)
+
+```
+
+Include gender details for students.Add Mr or Ms. For each student, using paste command . Display all students details.
+```{r}
+
+```
+
+Define user defined functions to perform the above operations.
+```{r}
+naming<-function(Gender)
+{
+  
+  if(Gender=='F')
+    res="Mrs "
+  else
+    res="Mr "
+  res
+}
+names=student$Gender
+res<-sapply(names,FUN=naming)
+d<-data.frame(res,student)
+d
+```
+
+Use while loop, for loop to access students marks and find the grades. Put this with in a function
+```{r}
+grade<-function(s1,s2,s3,s4,s5)
+{
+
+  tot<-(s1+s2+s3+s4+s5)/5
+  if(tot>=90)
+    res<-"S"
+  else if(tot>=75)
+    res<-"A"
+  else if(tot>=60)
+    res<-"B"
+  else if(tot>=50)
+    res<-"C"
+  else
+    res<-"F"
+  res
+}
+
+for(i in 1:nrow(student))
+{
+  
+  
+  s1<-as.numeric(student[i,"Sub1"])
+  
+  s2<-as.numeric(student[i,"Sub2"])
+  
+  s3<-as.numeric(student[i,"Sub3"])
+  
+  s4<-as.numeric(student[i,"Sub4"])
+  
+  s5<-as.numeric(student[i,"Sub5"])
+  g<-grade(s1,s2,s3,s4,s5)
+  print(as.character(student[i,"ï..Names"]))
+  print(g)
+  
+}
+```
+
+Use apply, sapply, lapply and tapply to perform the above operation over all the columns of students
+data set.
+```{r}
+grade<-function(s1)
+{
+
+  tot<-sum(s1)/5
+  if(tot>=90)
+    res<-"S"
+  else if(tot>=75)
+    res<-"A"
+  else if(tot>=60)
+    res<-"B"
+  else if(tot>=50)
+    res<-"C"
+  else
+    res<-"F"
+  res
+}
+
+mark<-c(as.numeric(student[1,"Sub1"])+as.numeric(student[1,"Sub2"])+as.numeric(student[1,"Sub3"])+as.numeric(student[1,"Sub4"])+as.numeric(student[1,"Sub5"]))
+sapply(mark,FUN=grade)
+lapply(mark,FUN=grade)
+tapply(mark,FUN=grade,INDEX=1)
+```
+
+Use with() function to apply the above operation over students dataset.
+```{r}
+
+```
+
+Use any() function to apply the above operation over students dataset.
+```{r}
+
+```
+

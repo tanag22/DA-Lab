@@ -1,0 +1,178 @@
+
+```{r}
+student<-read.csv('Q2a.csv',header=TRUE)
+head(student)
+```
+
+i. Store students marks numerically, transform into grades and store in new dataframe
+```{r}
+
+calculateGrade <- function(mark) 
+{
+  m<-c()
+  for(x in mark)
+  {
+  if(x >= 80) {
+    res <- "A"
+  } else if(x >= 60 & x<80) {
+    res <- "B"
+  } else if(x >= 40 & x<60) {
+    res <- "C"
+  } else {
+    res <- "D"
+  }
+  m<-c(m,res)
+  }
+  m
+}
+
+for(i in 1:nrow(student))
+{
+ s1<-student[,"Sub1"]
+ s2<-student[,"Sub2"]
+ s3<-student[,"Sub3"]
+ s4<-student[,"Sub4"]
+ s5<-student[,"Sub5"]
+ g1=calculateGrade(s1)
+ g2=calculateGrade(s2)
+ g3=calculateGrade(s3)
+ g4=calculateGrade(s4)
+ g5=calculateGrade(s5)
+}
+ans<-data.frame(student$Names,student$USN,student$Dept,g1,g2,g3,g4,g5)
+ans
+
+```
+
+ii. Check whether students grades are identical or not in each subject
+```{r}
+identical(ans$g1,ans$g2)
+```
+
+Extract students' marks in each subject separately. If the student has scored greater than 80 map it as "good", if it is between (80 and 60) map it as "moderate", if it is between (40 and 60) map it as "need improvement", else map it as "poor".
+```{r}
+assignComment <- function(mark) 
+{
+  x<-sum(mark)/5
+  
+  if(x >= 80) {
+    res <- "Good"
+  } else if(x >= 60 & x<80) {
+    res <- "Moderate"
+  } else if(x >= 40 & x<60) {
+    res <- "Need Improvement"
+  } else {
+    res <- "Poor"
+  }
+  res
+}
+for(i in 1:nrow(student))
+{
+ s1<-student[i,"Sub1"]
+ s2<-student[i,"Sub2"]
+ s3<-student[i,"Sub3"]
+ s4<-student[i,"Sub4"]
+ s5<-student[i,"Sub5"]
+ 
+ mark<-c(s1,s2,s3,s4,s5)
+ ans<-assignComment(mark)
+ student[i,"Comment"]<-ans
+ }
+ 
+student
+```
+
+Consider dataset given in (1.a) , map the S,A, grades as " GOOD"; map ,B,C grades
+as "average", D,E grades as "below average"; 'F' grade as "poor".
+```{r}
+calculateGrade <- function(x) {
+  if(x == 'S' | x == 'A') {
+    res <- "Good"
+  } else if(x == 'B' | x == 'C') {
+    res <- "Average"
+  } else if(x == 'D' | x == 'E') {
+    res <- "Below Average"
+  } else {
+    res <- "Poor"
+  }
+  res
+}
+for(i in 1:nrow(student))
+{
+ g<-student[i,"Grade"]
+ 
+
+ ans<-calculateGrade(g)
+ student[i,"Grade_Comment"]<-ans
+ }
+ 
+student
+
+
+```
+
+Transform dept names to numerical data.
+```{r}
+stud1<-transform(student,Dept=as.numeric(Dept))
+stud1
+
+```
+
+Using factor() and mapvalues() convert dept names to numerical data.
+```{r}
+
+stud2<-transform(student,Dept=as.factor(mapvalues(Dept,c("CSE","ISE"),c(1,2))))
+stud2
+```
+
+Create table from student data with USN and names only.
+```{r}
+
+table(student$Names,student$USN)
+```
+
+Display the typeof each column.
+```{r}
+sapply(student,typeof)
+
+```
+
+Write separate functions to perform all the above functions separately and call them in R script.
+
+Write a function to perform statistical analysis of students data.
+```{r}
+Summary_sub <- function(x) {
+  ans<-c(mean=mean(x), median=median(x), sd=sd(x))
+  ans
+}
+
+sub2<-student$Sub2
+ans<-Summary_sub(sub2)
+ans
+
+
+
+```
+
+Use sapply to perform 1.c, 1d
+```{r}
+calculateResult <- function(x) {
+  if(x >= 80) {
+    res <- "Good"
+  } else if(x >= 60 & x<80) {
+    res <- "Moderate"
+  } else if(x >= 40 & x<60) {
+    res <- "Need Improvement"
+  } else {
+    res <- "Poor"
+  }
+  res
+}
+
+sub1=student$Sub1
+sub1
+ans<-sapply(sub1,FUN=calculateResult)
+d<-data.frame(student$Names,ans)
+d
+```
+

@@ -1,0 +1,32 @@
+```{r}
+
+student<-read.csv('Q1a.csv',header=TRUE)
+head(student)
+```
+
+QUESTION 1
+a. Extract each dept students names separately
+```{r}
+aggregate(Name~Dept.Name,data=student,toString)
+
+```
+
+b. Extract S grade scores in all subjects in each dept seperately.
+```{r}
+s<-student[student$Sub1=="S"|student$Sub2=="S"|student$Sub3=="S"|student$Sub4=="S"|student$Sub5=="S",c("Name","Dept.Name")]
+aggregate(Name~Dept.Name,data=s,toString)
+```
+
+c. Extract students who have scored at least S grades in any 2 subjects
+```{r}
+student[rowSums(student=="S")>1,c("Name","Dept.Name")]
+
+```
+
+d. Extract students who have scored above 9 SGPA in each dept
+```{r}
+s1<-student[student$SGPA>9,c("Name","Dept.Name")]
+aggregate(Name~Dept.Name,data=s1,toString)
+
+```
+

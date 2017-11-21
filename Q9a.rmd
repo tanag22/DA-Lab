@@ -1,0 +1,116 @@
+```{r}
+f<-read.csv('Q9a.csv',header=TRUE)
+head(f)
+
+```
+
+a. Change the column names of faculty data set. 
+```{r}
+colnames(f)<-c("Names","Desig","Salary","Dept","Trainings","Papers")
+head(f)
+
+```
+
+b. Use with() and plot(), plot graph against dept and average Papers published.
+```{r}
+f1<-aggregate(Papers~Dept,f,mean)
+f1
+with(f1,plot(x=Dept,y=Papers))
+
+```
+c. Use qplot(), to plot the same mentioned in (b)
+```{r}
+library('ggplot2')
+qplot(f1$Dept,f1$Papers)
+
+```
+
+d. Use qplot() with attributes color, shape, x and y labels.
+```{r}
+qplot(f1$Dept,f1$Papers,xlab="Department",ylab="Average Papers",colour="red",shape=factor(f1$Dept))
+
+```
+
+e. Display the dimension of faculty data set.
+```{r}
+nrow(f)
+ncol(f)
+```
+
+f. using ggplot() and geom_point() , plot the same mentioned in (b)
+```{r}
+ggplot(data=f1,aes(x=Dept,y=Papers))+geom_point()
+
+```
+
+g. in ggplot() , change the point size.
+```{r}
+ggplot(data=f1,aes(x=Dept,y=Papers))+geom_point(size=2)
+
+```
+
+h. change color of points in ggplot().
+```{r}
+
+ggplot(data=f1,aes(x=Dept,y=Papers))+geom_point(size=2,colour="purple")
+```
+
+i. define your own color palatte and use it in ggplot()
+```{r}
+cbpallete<-c('#E69F00','#F6B4E9','#009E73','#F0EE22')
+ggplot(data=f1,aes(x=Dept,y=Papers))+geom_point(colour=cbpallete)
+
+```
+
+j. Using facet_wrap(), plot for (f), with respect to desgination.(Prof, Asso prof, Asst Prof)
+```{r}
+f2<-aggregate(Papers~Dept+Desig,f,mean)
+f2
+ggplot(data=f2,aes(x=Dept,y=Papers))+geom_point()+facet_wrap(~Desig)
+```
+
+k. Using facet_grid(), perform the (j)
+```{r}
+ggplot(data=f2,aes(x=Dept,y=Papers))+geom_point()+facet_grid(.~Desig)
+```
+
+l. Draw bar graph for (b) using ggplot and geom_bar().
+```{r}
+ggplot(data=f1,aes(x=Dept,y=Papers))+geom_bar(stat="identity")
+```
+
+m. Add legends in graph.
+```{r}
+c4<-c("CSE","ISE","MECH","TCE")
+ggplot(data=f1,aes(x=Dept,y=Papers,fill=c4))+geom_bar(stat="identity")
+```
+
+n. Draw smooth curves using stat_smooth() and by changing size for (b).
+```{r}
+
+f2<-aggregate(Papers~Dept+Desig,f,mean)
+f2
+ggplot(data=f2,aes(x=Dept,y=Papers))+geom_line()+stat_smooth()
+
+```
+
+o. Add title to ggplot() of your graph and draw regression lines and geom points for (b)
+```{r}
+ggplot(f1,aes(x=Dept,y=Papers)) + ggtitle("Average Papers per Dept")+geom_point()
+  
+```
+
+p. Draw ggplot() for dept wise average training programs attened by Asst prof.
+```{r}
+f3<-f[f$Desig=="Assistant Professor",]
+f4<-aggregate(Trainings~Dept,f3,mean)
+f4
+ggplot(f4,aes(x=Dept,y=Trainings))+geom_point()
+
+```
+
+q. Draw grom Polygon for (p)
+```{r}
+
+```
+

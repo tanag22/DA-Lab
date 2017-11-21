@@ -1,0 +1,50 @@
+```{r}
+faculty<-read.csv('Q3a.csv',header=TRUE)
+head(faculty)
+```
+
+Plot, in each dept, how many faculty are earning more than 1 lakh.
+```{r}
+f<-faculty[faculty$Salary>100000,c("Name","Dept")]
+f
+plot(table(f$Dept))
+
+```
+
+create subset of faculty, who have published more than 10 papers and their designation is Associate professor.
+```{r}
+sub<-subset(faculty,Designation=="Assosciate Professor" & Papers.Published>4)
+sub
+
+```
+
+Find out average papers published by each dept, designation wise
+```{r}
+a<-aggregate(Papers.Published~Dept+Designation,faculty,mean)
+a
+```
+
+Find out Average training programs attended by faculty each dept wise.
+```{r}
+aggregate(Training~Dept,faculty,mean)
+
+```
+
+v. Extract top 3 performers among faculty dept wise(more papers published and more
+training programmes attended)
+```{r}
+
+```
+
+vi. Sort faculty details , dept wise separately
+```{r}
+faculty[order(faculty$Dept,faculty$Name),]
+
+```
+
+vii. Search for faculty name in the data set and retrive his/her details
+```{r}
+subset(faculty,Name=="Mithra")
+
+```
+
